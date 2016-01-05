@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <string.h>
 
 void
 verifier(int cond, char *s)
@@ -83,6 +84,12 @@ void redirection_in(Expression *e) {
 
 void subshell(Expression *e) {
 
+		// Création d'un noeud qui appelle un MiniShell, ustiliser pstree -s pour voir le niveau de profondeur
+		char* args[2] = {"./Shell", NULL};
+		Expression* shell = ConstruireNoeud(SIMPLE, NULL, NULL, args);    
+		// execution du pipe
+		Expression* expr = ConstruireNoeud(PIPE,e->gauche,shell,NULL);
+		evaluer_expr(expr->gauche);
 }
 
 int
@@ -99,6 +106,8 @@ evaluer_expr(Expression *e)
     else
         switch(e->type) {
         case SIMPLE :
+            // gros switch de sa race avec les commandes internes si c'en est une
+            // sinon
             execvp(e->arguments[0], e->arguments);
             break;
         case BG :
