@@ -2,6 +2,6 @@
 #define COMINTERN_H
 #include "Shell.h"
 
-
+int echo(Expression* e);
 
 #endif

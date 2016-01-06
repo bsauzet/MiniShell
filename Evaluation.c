@@ -1,5 +1,6 @@
 #include "Shell.h"
 #include "Evaluation.h"
+#include "Commandes_Internes.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +10,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <stdbool.h>
 
 void
 verifier(int cond, char *s)
@@ -92,6 +94,31 @@ void subshell(Expression *e) {
 		evaluer_expr(expr->gauche);
 }
 
+bool is_commande_interne(Expression *e) {
+	
+	char* command = e->arguments[0];
+	
+	if(strcmp(command, "echo") == 0)
+		echo(e);
+	/*else if(strcmp(command, "date") == 0)
+	
+	else if(strcmp(command, "cd") == 0)
+	
+	else if(strcmp(command, "pwd") == 0)
+	
+	else if(strcmp(command, "history") == 0)
+	
+	else if(strcmp(command, "hostname") == 0)
+	
+	else if(strcmp(command, "kill") == 0)
+	
+	else if(strcmp(command, "exit") == 0)*/
+	
+	else 
+		return false;
+	return true;
+}
+
 int
 evaluer_expr(Expression *e)
 {
@@ -106,9 +133,8 @@ evaluer_expr(Expression *e)
     else
         switch(e->type) {
         case SIMPLE :
-            // gros switch de sa race avec les commandes internes si c'en est une
-            // sinon
-            execvp(e->arguments[0], e->arguments);
+            if(! is_commande_interne(e))
+				execvp(e->arguments[0], e->arguments);
             break;
         case BG :
             evaluer_expr(e->gauche);
