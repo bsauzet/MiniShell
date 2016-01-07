@@ -4,4 +4,6 @@
 
 int echo(Expression* e);
 
+int date();
+
 #endif
