@@ -2,10 +2,13 @@
 #define COMINTERN_H
 #include "Shell.h"
 
-int echo(Expression* e);
+void echo(Expression* e);
 
-int date();
+void date();
 
-int pwd();
+void pwd();
 
+void cd(Expression *e);
+
+void hostname();
 #endif
