@@ -11,4 +11,8 @@ void pwd();
 void cd(Expression *e);
 
 void hostname();
+
+void cmd_kill(Expression *e);
+
+void cmd_exit();
 #endif

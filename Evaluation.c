@@ -110,10 +110,10 @@ bool is_commande_interne(Expression *e) {
 	
 	else if(strcmp(command, "hostname") == 0)
 		hostname();
-	/*else if(strcmp(command, "kill") == 0)
-	
-	else if(strcmp(command, "exit") == 0)*/
-	
+	else if(strcmp(command, "kill") == 0)
+		cmd_kill(e);
+	else if(strcmp(command, "exit") == 0)
+		cmd_exit();
 	else 
 		return false;
 	return true;
@@ -127,8 +127,9 @@ evaluer_expr(Expression *e)
     pid=fork();
 
     // Si la commande n'est pas lancée en arrière plan, on attend la fin du fils pour continuer l'utilisation du shell
-    if(pid!=0 && e->type != BG)
+    if(pid!=0 && e->type != BG) {
         wait(&status);
+	}
     // En fonction du type de commande, le fils va exécuter la commande
     else
         switch(e->type) {
@@ -171,6 +172,5 @@ evaluer_expr(Expression *e)
         }
     // On vérifie régulièrement si un fils s'est terminé pour se débarasser des zombies
     waitpid(-1,&status,WNOHANG);
-
     return status;
 }

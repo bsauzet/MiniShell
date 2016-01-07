@@ -2,6 +2,7 @@
 
 #include "Commandes_Internes.h"
 #include <time.h>
+#include <signal.h>
 
 // écrit les arguments sur la sortie standard
 void echo(Expression* e) {
@@ -47,4 +48,19 @@ void hostname() {
 	
 	gethostname(name, sizeof(name));
 	printf("%s\n", name); 
+}
+
+// Envoie un signal au processus de pid voulu
+void cmd_kill(Expression *e) {
+	
+	int pid = atoi(e->arguments[2]);
+	int signal = - atoi(e->arguments[1]); // transforme par exemple le string -9 en l'int 9, numero du signal
+
+	kill(pid, signal);
+}
+
+// termine le shell
+void cmd_exit() {
+	
+	kill(getppid(), SIGKILL);
 }
