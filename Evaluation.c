@@ -102,11 +102,11 @@ bool is_commande_interne(Expression *e) {
 		echo(e);
 	else if(strcmp(command, "date") == 0)
 		date();
-	/*else if(strcmp(command, "cd") == 0)
+	//else if(strcmp(command, "cd") == 0)
 	
 	else if(strcmp(command, "pwd") == 0)
-	
-	else if(strcmp(command, "history") == 0)
+		pwd();
+	/*else if(strcmp(command, "history") == 0)
 	
 	else if(strcmp(command, "hostname") == 0)
 	

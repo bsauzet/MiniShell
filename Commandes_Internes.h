@@ -6,4 +6,6 @@ int echo(Expression* e);
 
 int date();
 
+int pwd();
+
 #endif

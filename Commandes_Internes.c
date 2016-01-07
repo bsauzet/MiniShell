@@ -26,3 +26,14 @@ int date() {
 	time.tm_gmtoff/36);
 	return 0;
 }
+
+// affiche le répertoire courant
+int pwd() {
+	
+	// on pourra rajouter un malloc/realloc pour ne pas avoir de problème de taille
+	char dir[1024];
+	
+	printf("%s\n", getcwd(dir, sizeof(dir)));
+	
+	return 0;
+}
