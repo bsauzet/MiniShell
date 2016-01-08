@@ -15,4 +15,7 @@ void hostname();
 void cmd_kill(Expression *e);
 
 void cmd_exit();
+
+void history();
+
 #endif

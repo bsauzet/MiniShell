@@ -3,6 +3,11 @@
 #include "Commandes_Internes.h"
 #include <time.h>
 #include <signal.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 // écrit les arguments sur la sortie standard
 void echo(Expression* e) {
@@ -63,4 +68,13 @@ void cmd_kill(Expression *e) {
 void cmd_exit() {
 	
 	kill(getppid(), SIGKILL);
+	exit(0);
+}
+
+// Affiche l'historique des commandes
+void history() {
+
+	char* tab[3] = {"cat", "hist", NULL};
+	write_history("hist");
+	execvp(tab[0], tab);
 }

@@ -24,6 +24,7 @@ verifier(int cond, char *s)
 
 void command_pipe(Expression *e) {
     // création du pipe
+    int stdout = dup(1);
     int tube[2];
     pipe(tube);
     // 2 processus pour le pipe
@@ -40,6 +41,9 @@ void command_pipe(Expression *e) {
         dup2(tube[1], STDOUT_FILENO);
         evaluer_expr(e->gauche);
     }
+    
+	dup2(stdout, 1);
+	close(stdout);     
 }
 
 void redirection_out(Expression *e, int append) {
@@ -106,8 +110,8 @@ bool is_commande_interne(Expression *e) {
 		cd(e);
 	else if(strcmp(command, "pwd") == 0)
 		pwd();
-	//else if(strcmp(command, "history") == 0)
-	
+	else if(strcmp(command, "history") == 0)
+		history();
 	else if(strcmp(command, "hostname") == 0)
 		hostname();
 	else if(strcmp(command, "kill") == 0)
