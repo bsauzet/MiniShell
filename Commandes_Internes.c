@@ -77,9 +77,12 @@ void cmd_exit() {
 // Affiche l'historique des commandes
 void history() {
 
-	char* tab[3] = {"cat", "hist", NULL};
-	write_history("hist");
-	execvp(tab[0], tab);
+	HIST_ENTRY ** hist_list;
+	hist_list = history_list();
+	
+	if(hist_list)
+		for (int i = 0; hist_list[i]; i++)
+			printf("%d: %s\n", i + history_base, hist_list[i]->line);
 }
 
 void remote(Expression *e) {
@@ -95,7 +98,7 @@ void remote(Expression *e) {
 	else if(strcmp(commande, "list") == 0)
 		remote_list();
 	//else
-		//remote_one(e->arguments[1]);
+	//	remote_one(e->arguments[1]);
 }
 
 // affiche la liste des machines
@@ -108,8 +111,21 @@ void remote_list() {
 // ajoute les machines données en arguments à la liste
 void remote_add(Expression* e) {
 	
+	int in = dup(0);
+	int out = dup(1);
+	
+	pid_t pid;
+	
 	for (int i = 2; i < LongueurListe(e->arguments); i++)
 	{
+		// création du bash distant
+		if((pid = fork()) == 0) {
+			execlp("ssh", "ssh", e->arguments[i], "bash", NULL);
+		}
+		if((pid = fork()) == 0) {
+			printf("lol\n");
+		}
+		// ajout de le machine dans la liste
 		strcpy(machines[nb_machines], e->arguments[i]);
 		nb_machines ++;
 	}
