@@ -9,6 +9,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+char machines[20][1024];
+int nb_machines = 0;
+
 // écrit les arguments sur la sortie standard
 void echo(Expression* e) {
 	
@@ -78,3 +81,37 @@ void history() {
 	write_history("hist");
 	execvp(tab[0], tab);
 }
+
+void remote(Expression *e) {
+	
+	char* commande = e->arguments[1];
+	
+	if(strcmp(commande, "add") == 0)
+		remote_add(e);
+	else if(strcmp(commande, "remove") == 0)
+		nb_machines = 0;
+//	if(strcmp(commande, "all") == 0)
+	
+	else if(strcmp(commande, "list") == 0)
+		remote_list();
+	//else
+		//remote_one(e->arguments[1]);
+}
+
+// affiche la liste des machines
+void remote_list() {
+	
+	for (int i = 0; i < nb_machines; i++)
+		printf("%s\n", machines[i]);
+}
+
+// ajoute les machines données en arguments à la liste
+void remote_add(Expression* e) {
+	
+	for (int i = 2; i < LongueurListe(e->arguments); i++)
+	{
+		strcpy(machines[nb_machines], e->arguments[i]);
+		nb_machines ++;
+	}
+}
+

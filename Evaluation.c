@@ -98,10 +98,13 @@ void subshell(Expression *e) {
 		evaluer_expr(expr->gauche);
 }
 
+// Vérifie si la commande est une commande interne
 bool is_commande_interne(Expression *e) {
 	
+	// récupère le nom de la commande
 	char* command = e->arguments[0];
 	
+	// si c'est une commande interne, on l'exécute
 	if(strcmp(command, "echo") == 0)
 		echo(e);
 	else if(strcmp(command, "date") == 0)
@@ -118,7 +121,9 @@ bool is_commande_interne(Expression *e) {
 		cmd_kill(e);
 	else if(strcmp(command, "exit") == 0)
 		cmd_exit();
-	else 
+	else if(strcmp(command, "remote") == 0)
+		remote(e);
+	else  // si ce n'est aucune des commandes internes, on renvoie false pour pouvoir executer la commande si besoin
 		return false;
 	return true;
 }

@@ -18,4 +18,10 @@ void cmd_exit();
 
 void history();
 
+void remote(Expression *e);
+
+void remote_list();
+
+void remote_add(Expression* e);
+
 #endif
