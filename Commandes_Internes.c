@@ -85,6 +85,12 @@ void history() {
 			printf("%d: %s\n", i + history_base, hist_list[i]->line);
 }
 
+//********************************************//
+// Cette partie du code n'est pas entièrement //
+// fonctionnelle, il s'agit d'un ébauche	  //
+//********************************************//
+
+// shells distants
 void remote(Expression *e) {
 	
 	char* commande = e->arguments[1];
@@ -98,7 +104,7 @@ void remote(Expression *e) {
 	else if(strcmp(commande, "list") == 0)
 		remote_list();
 	//else
-	//	remote_one(e->arguments[1]);
+	//	remote_one(e->arguments[1]);  // fonction qui lance une commande sur une machine distante
 }
 
 // affiche la liste des machines
@@ -111,23 +117,19 @@ void remote_list() {
 // ajoute les machines données en arguments à la liste
 void remote_add(Expression* e) {
 	
-	int in = dup(0);
-	int out = dup(1);
-	
 	pid_t pid;
 	
-	for (int i = 2; i < LongueurListe(e->arguments); i++)
-	{
+	for (int i = 2; i < LongueurListe(e->arguments); i++) {
 		// création du bash distant
 		if((pid = fork()) == 0) {
 			execlp("ssh", "ssh", e->arguments[i], "bash", NULL);
 		}
+		// création d'un autre processus fils pour communiquer avec le bash distant
 		if((pid = fork()) == 0) {
-			printf("lol\n");
+
 		}
-		// ajout de le machine dans la liste
+		// ajout de le machine dans la liste 
 		strcpy(machines[nb_machines], e->arguments[i]);
 		nb_machines ++;
 	}
 }
-

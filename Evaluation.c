@@ -25,7 +25,6 @@ verifier(int cond, char *s)
 void command_pipe(Expression *e) {
     // création du pipe
     int stdout = dup(1);
-    int stdin = dup(0);
     int tube[2];
     pipe(tube);
     // 2 processus pour le pipe
